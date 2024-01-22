@@ -19,3 +19,10 @@
 
 # Go workspace file
 go.work
+
+# Output folder
+bin/
+
+# Configuration files
+config.yml
+id_rsa*
