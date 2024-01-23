@@ -39,8 +39,24 @@ func init() {
 		server = &ssh.Server{
 			Addr:    fmt.Sprintf("%s:%d", config.Host, config.Port),
 			Handler: HandleConnection,
+			KeyboardInteractiveHandler: func(ctx ssh.Context, challenger ssh2.KeyboardInteractiveChallenge) bool {
+				return true
+			},
+			PasswordHandler: func(ctx ssh.Context, password string) bool {
+				return true
+			},
 			PublicKeyHandler: func(ctx ssh.Context, key ssh.PublicKey) bool {
 				return true
+			},
+			PtyCallback: func(ctx ssh.Context, pty ssh.Pty) bool {
+				return true
+			},
+			ServerConfigCallback: func(ctx ssh.Context) *ssh2.ServerConfig {
+				return &ssh2.ServerConfig{
+					BannerCallback: func(conn ssh2.ConnMetadata) string {
+						return "Welcome to sshchat"
+					},
+				}
 			},
 		}
 
